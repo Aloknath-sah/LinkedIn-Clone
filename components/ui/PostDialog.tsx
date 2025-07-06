@@ -1,13 +1,10 @@
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { ProfilePhoto } from "../shared/ProfilePhoto";
@@ -16,6 +13,8 @@ import { Images } from "lucide-react";
 import { useRef, useState } from "react";
 import { readFileAsDataUrl } from "@/lib/utils";
 import Image from "next/image";
+import { createPostAction } from "@/lib/serveractions";
+import { toast } from "sonner";
 
 export function PostDialog({
   setOpen,
@@ -26,51 +25,79 @@ export function PostDialog({
   open: boolean;
   src: string;
 }) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [selectedFile, setSelectedFile] = useState<string>("");
+  const [inputText, setInputText] = useState<string>("");
 
-    const inputRef = useRef<HTMLInputElement>(null);
-    const [selectedFile, setSelectedFile] = useState<string>("")
-    const fileChangeHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0]
-        if(file) {
-            const dataUrl = await readFileAsDataUrl(file)
-            setSelectedFile(dataUrl)
-        }
+  const changeHandler = (e: any) => {
+    setInputText(e.target.value);
+  };
+
+  const fileChangeHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const dataUrl = await readFileAsDataUrl(file);
+      setSelectedFile(dataUrl);
     }
+  };
+
+  const postActionHandler = async (formData: FormData) => {
+    const inputText = formData.get("inputText") as string;
+    try {
+      await createPostAction(inputText, selectedFile);
+    } catch (err) {
+      console.log("error occured", err);
+    }
+    setInputText("");
+    setOpen(false);
+  };
 
   return (
     <Dialog open={open}>
-      <form>
-        <DialogContent
-          onInteractOutside={() => setOpen(false)}
-          className="sm:max-w-[425px]"
+      <DialogContent
+        onInteractOutside={() => setOpen(false)}
+        className="sm:max-w-[425px]"
+      >
+        <DialogHeader>
+          <DialogTitle className="flex gap-3">
+            <ProfilePhoto src={src} />
+            <div>
+              <h1>Alok</h1>
+              <p className="font-light text-xs">Post to anyone</p>
+            </div>
+          </DialogTitle>
+        </DialogHeader>
+        <form
+          action={(formData) => {
+            const promise = postActionHandler(formData);
+            toast.promise(promise, {
+              loading: "Creating post...",
+              success: "Post created",
+              error: "Failed to create post",
+            });
+          }}
         >
-          <DialogHeader>
-            <DialogTitle className="flex gap-3">
-              <ProfilePhoto src={src} />
-              <div>
-                <h1>Alok</h1>
-                <p className="font-light text-xs">Post to anyone</p>
-              </div>
-            </DialogTitle>
-          </DialogHeader>
-          <div className="grid gap-4">
-           
-              <div className="flex flex-col">
-                <Textarea
-                  id="name"
-                  name="inputText"
-                  className="border-none text-lg h-50"
-                  placeholder="Share your thoughts..."
-                  
-                />
-              </div>
-              <div className="my-4">
-                {
-                    selectedFile && (<Image src={selectedFile} alt="preview-image" width={400} height={400} />)
-                }
-              </div>
-            
+          <div className="flex flex-col">
+            <Textarea
+              id="name"
+              name="inputText"
+              onChange={changeHandler}
+              value={inputText}
+              className="border-none text-lg h-50"
+              placeholder="Share your thoughts..."
+            />
           </div>
+          <div className="my-4">
+            {selectedFile && (
+              <Image
+                src={selectedFile}
+                alt="preview-image"
+                width={400}
+                height={400}
+              />
+            )}
+          </div>
+
           <DialogFooter>
             <div className="flex items-center-gap">
               <input
@@ -81,17 +108,20 @@ export function PostDialog({
                 className="hidden"
                 accept="image/*"
               />
-              <Button type="submit">Post</Button>
+              <Button
+                type="submit"
+                onClick={() => console.log("🚀 Submit button clicked")}
+              >
+                Post
+              </Button>
             </div>
-            
           </DialogFooter>
-          <Button onClick={() => inputRef?.current?.click()} variant={'ghost'}>
-        <Images className="text-blue-500" alt="media" />
-        <p>Media</p>
-      </Button>
-        </DialogContent>
-      </form>
-      
+        </form>
+        <Button onClick={() => inputRef?.current?.click()} variant={"ghost"}>
+          <Images className="text-blue-500" />
+          <p>Media</p>
+        </Button>
+      </DialogContent>
     </Dialog>
   );
 }
