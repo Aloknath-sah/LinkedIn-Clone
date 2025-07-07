@@ -11,13 +11,13 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={`min-h-screen flex flex-col`}>
+        <body className={`min-h-screen flex flex-col h-full overflow-y-auto`}>
           <Toaster richColors />
           <div className="sticky top-0 z-50 bg-white shadow" >
             <Navbar />
           </div>
          
-          <div className="flex-1 w-full pt-35">
+          <div className="flex-1 w-full pt-35 mt-20">
             <main className="max-w-6xl mx-auto">{children}</main>
           </div>
         </body>

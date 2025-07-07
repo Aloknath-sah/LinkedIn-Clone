@@ -10,6 +10,7 @@ export interface IPost {
 }
 
 export interface IPostDocument extends IPost, Document {
+  _id: string,
   createdAt: Date;
   updatedAt: Date;
 }
@@ -38,6 +39,10 @@ const postSchema = new mongoose.Schema<IPostDocument>(
         type: String,
         required: false,
       },
+    },
+    imageUrl: {
+        type: String,
+        required: false,
     },
 
     likes: {

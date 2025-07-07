@@ -4,6 +4,7 @@ import { currentUser } from "@clerk/nextjs/server";
 import { v2 as cloudinary } from "cloudinary";
 import connectDB from "./db";
 import { IUser } from "@/models/user.model";
+import { revalidatePath } from "next/cache";
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
@@ -12,6 +13,7 @@ cloudinary.config({
   secure: true,
 });
 
+// creating post using server actions
 export const createPostAction = async (
   inputText: string,
   selectedFile: string
@@ -49,7 +51,21 @@ export const createPostAction = async (
         user: userDatabase,
       });
     }
+    revalidatePath("/");
   } catch (err: any) {
     throw new Error(err);
   }
 };
+
+//get all post using server actions
+export const getAllPosts = async () => {
+  await connectDB()
+  try {
+    const posts = await Post.find().sort({createdAt: -1})
+    console.log(posts)
+    return JSON.parse(JSON.stringify(posts));
+  }
+  catch(error) {
+    console.log(error)
+  }
+}
