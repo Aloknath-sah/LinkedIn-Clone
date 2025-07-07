@@ -8,30 +8,33 @@ export const SideBar = async ({user}: {user: any}) => {
   const posts = await getAllPosts();
 
   return (
-    <div className='hidden md:block h-fit border border-gray-300 bg-white rounded-lg pt-25'>
-      <div className='flex flex-col items-center relative' >
-        <div className='w-full h-45 overflow-hidden'>
+    <div className='hidden md:block h-fit md:w-[300px] rounded-lg'>
+      <div className='flex flex-col items-center relative border border-gray-300 bg-white ' >
+        <div className='w-full h-[120px] overflow-hidden'>
           
           {
             user && (
-              <Image src={"/banner.jpg"} alt="Banner" width={200} height={200} className='w-full h-full rounded-top' />
+              <Image src={"/banner.jpg"} alt="Banner" width={100} height={100} className='w-full h-full rounded-top' />
             )
           }
         </div>
-        <div className='my-1 absolute top-40'>
-          <ProfilePhoto src={user? user?.imageUrl: "/banner.jpg"} />
+        <div className='absolute
+            left-1/2 -translate-x-1/2 
+            md:left-6 md:translate-x-0 
+            top-[70px]'>
+          <ProfilePhoto src={user? user?.imageUrl: "/banner.jpg"} size="w-28 h-28" />
         </div>
-        <div className='w-full border-b border-b-gray-300'>
+        <div style={{marginTop: '50px'}} className='w-full border-b border-b-gray-300'>
           <div className='p-2 mt-5 text-center font-bold'>
             <h1>{user ? `${user?.firstName} ${user?.lastName}` : "User"} </h1>
             <p>{user ? `${user?.username}` : "username" } </p>
           </div>
           <div className='text-xs'>
-            <div className='w-[100%] flex justify-between items-center px-3 py-2 hover:bg-gray-200 cursor-pointer' >
+            <div className='w-[100%] flex justify-between items-center px-3 py-2 hover:bg-gray-200 cursor-pointer'>
               <p className='text-left' >Post Impression</p>
               <p className='text-blue-500 font-bold text-right'>88 </p>
             </div>
-             <div className='w-[100%] flex justify-between items-center px-3 py-2 hover:bg-gray-200 cursor-pointer' >
+             <div className='w-[100%] flex justify-between items-center px-3 py-2 hover:bg-gray-200 cursor-pointer'>
               <p className='text-left' >Posts</p>
               <p className='text-blue-500 font-bold text-right'>{posts.length} </p>
             </div>
