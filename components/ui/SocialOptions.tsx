@@ -45,12 +45,12 @@ export const SocialOptions = ({post}: {post: IPostDocument}) => {
 
   return (
     <div>
-        <div>
+        <div className='flex justify-between' >
             {
                 likes && likes.length > 0 && (<p className='text-xm text-gray-500 hover:text-blue-500 hover:underline hover:cursor-pointer' >{likes.length} like </p>)
             }
             {
-                post?.comments && post?.comments.length > 0 && (<p className='text-xm text-gray-500 hover:text-blue-500 hover:underline hover:cursor-pointer' >{post.comments.length} comment </p>)
+                post?.comments && post?.comments.length > 0 && (<p className='text-xm text-gray-500 hover:text-blue-500 hover:underline hover:cursor-pointer' onClick={() => setCommentOpen(!commentOpen)} >{post.comments.length} comment </p>)
             }
         </div>
         <div className="flex items-center m-1 justify-between">

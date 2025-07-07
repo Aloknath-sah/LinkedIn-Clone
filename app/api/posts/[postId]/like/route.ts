@@ -21,7 +21,9 @@ export const POST = async (
   req: NextRequest,
   context: { params: { postId: string } }
 ) => {
-  const { postId } = context.params;
+  console.log(context.params)
+
+  const postId  = context.params.postId;
   try {
     await connectDB();
     const userId = await req.json();
