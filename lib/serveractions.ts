@@ -5,6 +5,7 @@ import { v2 as cloudinary } from "cloudinary";
 import connectDB from "./db";
 import { IUser } from "@/models/user.model";
 import { revalidatePath } from "next/cache";
+import { Comment } from "@/models/comment.model";
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
@@ -59,35 +60,69 @@ export const createPostAction = async (
 
 //get all post using server actions
 export const getAllPosts = async () => {
-  await connectDB()
+  await connectDB();
   try {
-    const posts = await Post.find().sort({createdAt: -1})
-    console.log(posts)
+    const posts = await Post.find().sort({ createdAt: -1 }).populate({path: 'comments', options: {sort: {createdAt: -1}}});
+    if(!posts) return [];
     return JSON.parse(JSON.stringify(posts));
+  } catch (error) {
+    console.log(error);
+    return [];
   }
-  catch(error) {
-    console.log(error)
-  }
-}
+};
 
 //delete post by id
 export const deletePostAction = async (postId: string) => {
   await connectDB();
   const user = await currentUser();
-  if(!user) throw new Error('User not authenticated')
-  const post = await Post.findById(postId)
-  if(!post) throw new Error('Post not found')
-  
-    //delete only your post only not others
-    if(post.user.userId !== user.id) {
-      throw new Error("You are not an owner of this post")
-    }
+  if (!user) throw new Error("User not authenticated");
+  const post = await Post.findById(postId);
+  if (!post) throw new Error("Post not found");
 
-    try {
-      await Post.deleteOne({_id: postId})
-      revalidatePath("/")
-    }
-    catch(err: any) {
-      throw new Error('An error occured', err)
-    }
-}
+  //delete only your post only not others
+  if (post.user.userId !== user.id) {
+    throw new Error("You are not an owner of this post");
+  }
+
+  try {
+    await Post.deleteOne({ _id: postId });
+    revalidatePath("/");
+  } catch (err: any) {
+    throw new Error("An error occured", err);
+  }
+};
+
+export const createCommentAction = async (
+  postId: string,
+  formData: FormData
+) => {
+  try {
+    const user = await currentUser();
+    if (!user) throw new Error("User not authenticated");
+    const inputText = formData.get("inputText") as string;
+    if (!inputText) throw new Error("field is required");
+    if (!postId) throw new Error("postId is required");
+
+    const userDatabase: IUser = {
+      firstName: user.firstName || "Alok",
+      lastName: user.lastName || "sah",
+      userId: user.id,
+      profilePhoto: user.imageUrl,
+    };
+
+    const post = await Post.findById({ _id: postId });
+    if (!post) throw new Error("post not found");
+
+    const comment = await Comment.create({
+      textMessage: inputText,
+      user: userDatabase,
+    });
+
+    post.comments?.push(comment._id);
+    await post.save();
+    revalidatePath("/");
+
+  } catch (error) {
+    throw new Error("error occured");
+  }
+};

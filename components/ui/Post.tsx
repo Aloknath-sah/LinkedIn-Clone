@@ -53,7 +53,7 @@ export const Post = ({ post }: { post: IPost }) => {
       </div>
 
       <PostContent post={post} />
-      <SocialOptions />
+      <SocialOptions post={post} />
     </div>
   );
 };

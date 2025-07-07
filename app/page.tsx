@@ -8,20 +8,21 @@ export default async function Home() {
 
   return (
     <div className="w-full flex justify-between gap-8 px-4 sm:px-10 py-8">
-      {/* sidebar */}
-      <div className="w-[30%]">
-        <SideBar user={user} />
-      </div>
+      
+        {/* sidebar */}
+        <div className="w-[30%]">
+          <SideBar user={user} />
+        </div>
 
-      {/* feed */}
-      <div className="w-full lg:w-[40%]">
-        <Feed user={user} />
-      </div>
+        {/* feed */}
+        <div className="w-full lg:w-[40%]">
+          <Feed user={user} />
+        </div>
 
-      {/* news */}
-      <div className="w-[30%]">
-        <News />
-      </div>
+        {/* news */}
+        <div className="w-[30%]">
+          <News />
+        </div>
     </div>
   );
 }

@@ -6,7 +6,7 @@ export const Posts = ({posts}: {posts: IPostDocument[]}) => {
   return (
     <div>
       {
-        posts.map((post) => (
+        posts?.map((post) => (
           <Post key={post._id} post={post} />
         ))
       }
