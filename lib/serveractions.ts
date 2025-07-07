@@ -69,3 +69,25 @@ export const getAllPosts = async () => {
     console.log(error)
   }
 }
+
+//delete post by id
+export const deletePostAction = async (postId: string) => {
+  await connectDB();
+  const user = await currentUser();
+  if(!user) throw new Error('User not authenticated')
+  const post = await Post.findById(postId)
+  if(!post) throw new Error('Post not found')
+  
+    //delete only your post only not others
+    if(post.user.userId !== user.id) {
+      throw new Error("You are not an owner of this post")
+    }
+
+    try {
+      await Post.deleteOne({_id: postId})
+      revalidatePath("/")
+    }
+    catch(err: any) {
+      throw new Error('An error occured', err)
+    }
+}
