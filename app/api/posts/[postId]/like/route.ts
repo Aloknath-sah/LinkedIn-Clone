@@ -25,17 +25,21 @@ export const GET = async (req: NextRequest) => {
 };
 
 //post likes
-export const POST = async (
-  req: NextRequest,
-  context: { params: { postId: string } }
-) => {
-  console.log(context.params);
-
-  const postId = context.params.postId;
+export const POST = async (req: NextRequest) => {
   try {
     await connectDB();
+    const url = new URL(req.url);
+    const postId = url.pathname.split("/").pop();
+
+    if (!postId) {
+      return NextResponse.json(
+        { error: "No post ID provided" },
+        { status: 400 }
+      );
+    }
+
     const userId = await req.json();
-    const post = await Post.findById({ _id: postId });
+    const post = await Post.findById(postId);
     if (!post) return NextResponse.json({ error: "Post not found" });
     await post.updateOne({ $addToSet: { likes: userId } });
     return NextResponse.json({ message: "Post liked successfully" });
