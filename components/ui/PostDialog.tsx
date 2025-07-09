@@ -5,12 +5,13 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogClose,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { ProfilePhoto } from "../shared/ProfilePhoto";
 import { Textarea } from "@/components/ui/textarea";
 import { Images } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { readFileAsDataUrl } from "@/lib/utils";
 import Image from "next/image";
 import { createPostAction } from "@/lib/serveractions";
@@ -28,6 +29,17 @@ export function PostDialog({
   const inputRef = useRef<HTMLInputElement>(null);
   const [selectedFile, setSelectedFile] = useState<string>("");
   const [inputText, setInputText] = useState<string>("");
+
+  //useeffect is to reset the files and text, when user opens it next time.
+  useEffect(() => {
+    if (open) {
+      setInputText("");
+      setSelectedFile("");
+      if (inputRef.current) {
+        inputRef.current.value = "";
+      }
+    }
+  }, [open]);
 
   const changeHandler = (e: any) => {
     setInputText(e.target.value);
@@ -53,10 +65,10 @@ export function PostDialog({
   };
 
   return (
-    <Dialog open={open}>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent
         onInteractOutside={() => setOpen(false)}
-        className="sm:max-w-[425px]"
+        className="sm:max-w-[425px] w-full max-h-[90vh] overflow-y-auto rounded-xl bg-white p-6 shadow-lg"
       >
         <DialogHeader>
           <DialogTitle className="flex gap-3">
@@ -99,7 +111,7 @@ export function PostDialog({
           </div>
 
           <DialogFooter>
-            <div className="flex items-center-gap">
+            <div className="flex items-center gap-2">
               <input
                 ref={inputRef}
                 onChange={fileChangeHandler}
@@ -110,6 +122,7 @@ export function PostDialog({
               />
               <Button
                 type="submit"
+                className="bg-black text-white "
                 onClick={() => console.log("🚀 Submit button clicked")}
               >
                 Post

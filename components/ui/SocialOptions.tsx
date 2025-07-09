@@ -45,7 +45,7 @@ export const SocialOptions = ({post}: {post: IPostDocument}) => {
 
   return (
     <div>
-        <div className='flex justify-between' >
+        <div className='flex justify-between px-3' >
             {
                 likes && likes.length > 0 && (<p className='text-xm text-gray-500 hover:text-blue-500 hover:underline hover:cursor-pointer' >{likes.length} like </p>)
             }

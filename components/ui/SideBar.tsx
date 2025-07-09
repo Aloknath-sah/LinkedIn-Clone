@@ -8,7 +8,7 @@ export const SideBar = async ({user}: {user: any}) => {
   const posts = await getAllPosts();
 
   return (
-    <div className='hidden md:block h-fit md:w-[300px] rounded-lg'>
+    <div className='hidden md:block h-fit w-full rounded-xl bg-white border border-gray-200 overflow-hidden'>
       <div className='flex flex-col items-center relative border border-gray-300 bg-white ' >
         <div className='w-full h-[120px] overflow-hidden'>
           

@@ -27,16 +27,17 @@ const newsItem: NAVITEMS[] = [
 
 export const News = () => {
   return (
-    <div className='hidden md:block w-full bg-white h-fit rounded-lg-border border-gray-300'>
+    <div className='bg-white rounded-xl border border-gray-300 p-4 shadow-sm'>
       <div className='flex items-center justify-between p-3' >
-        <h1 className='font-medium'>LinkedIn News </h1>
+        <h1 className='font-medium text-lg px-1'>LinkedIn News </h1>
         <Info size={18} />
       </div>
       <div>
+        <div className='px-4'>Top Stories </div>
         {
           newsItem.map((item, index) => {
             return (
-              <div key={index}>
+              <div key={index} className='px-4 py-2'>
                 <h1 className='text-sm font-medium'>{item.heading} </h1>
                 <p className='text-xs text-gray-600'>{item.subHeading} </p>
               </div>

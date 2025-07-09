@@ -11,7 +11,7 @@ export const FeedInput = ({ user }: { user: any }) => {
   }
   if(!user) return null
   return (
-    <div className='w-full' >
+    <div className='w-full rounded-md'>
     
        <div className="w-full p-4 m-2 md:m-0 border border-gray-300 rounded-lg flex justify-between" >
         <div className="" >

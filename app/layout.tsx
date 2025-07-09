@@ -11,11 +11,11 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className="h-full flex flex-col bg-gray-100">
+        <body className="h-full flex flex-col bg-gray-200">
 
           <Toaster richColors />
 
-          <div className="sticky top-0 z-50 bg-white shadow">
+          <div className="sticky top-0 z-50 bg-white shadow mb-4">
             <Navbar />
           </div>
 

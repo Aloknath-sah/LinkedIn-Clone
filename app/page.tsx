@@ -10,17 +10,19 @@ export default async function Home() {
     <div className="w-full flex justify-between gap-8 px-4 sm:px-10 py-8">
       
         {/* sidebar */}
-        <div className="w-[30%]">
+        <div className="hidden lg:block w-[25%]">
           <SideBar user={user} />
         </div>
 
         {/* feed */}
-        <div className="w-full lg:w-[40%]">
+        <div className="w-full lg:w-[50%]">
+           <div className="rounded-xl bg-white shadow-sm">
           <Feed user={user} />
+          </div>
         </div>
 
         {/* news */}
-        <div className="w-[30%]">
+        <div className="hidden lg:block w-[25%]">
           <News />
         </div>
     </div>
