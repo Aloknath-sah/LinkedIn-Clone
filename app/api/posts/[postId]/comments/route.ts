@@ -3,18 +3,30 @@ import { Post } from "@/models/post.model";
 import { NextRequest, NextResponse } from "next/server";
 
 //fetch all comments
-export const GET = async(req: NextRequest, {params}: {params: {postId: string}}) => {
-    try {
-        await connectDB();
-        const post = Post.findById({_id: params.postId})
-        if(!post) return NextResponse.json({error: "post not found"})
-        const comments = await post.populate({
-            path: 'comments',
-            options: {sort: {createdAt: -1}}
-        });
-        return NextResponse.json(comments);
+export const GET = async (req: NextRequest) => {
+  try {
+    await connectDB();
+
+    const url = new URL(req.url);
+    const postId = url.pathname.split("/").pop();
+
+    if (!postId) {
+      return NextResponse.json(
+        { error: "No post ID provided" },
+        { status: 400 }
+      );
     }
-    catch {
-        return NextResponse.json({error: 'an error occured'})
-    }
-}
+
+    const post = Post.findById(postId);
+
+    if (!post) return NextResponse.json({ error: "post not found" });
+    const comments = await post.populate({
+      path: "comments",
+      options: { sort: { createdAt: -1 } },
+    });
+    
+    return NextResponse.json(comments);
+  } catch {
+    return NextResponse.json({ error: "an error occured" });
+  }
+};
