@@ -25,7 +25,11 @@ export const Navbar = () => {
             </SignedIn>
             <SignedOut>
               <SignInButton mode="modal">
-                <Button className="rounded-full" variant={'secondary'}>Sign In</Button>
+                <div>
+                   <Image src={"/profileImg.png"} className="rounded-full ml-5" alt="logo" width={25} height={25} />
+                <Button className="rounded-full cursor-pointer" variant={'secondary'}>Sign In</Button>
+                </div>
+               
               </SignInButton>
             </SignedOut>
           </div>
