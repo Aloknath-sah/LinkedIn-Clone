@@ -21,7 +21,7 @@ export const CommentInput = ({postId}: {postId: string}) => {
   return (
     <form action={(formData) => commentActionHandler(formData)} >
         <div className='flex items-center gap-2'>
-            <ProfilePhoto src={user?.imageUrl} />
+            <ProfilePhoto src={user?.imageUrl ?? "/banner.jpg" } />
             <Input type="text" name="inputText" placeholder="Add a comment" className='rounded-full' />
             <Button variant={'outline'} className='rounded-full'>Send</Button>
         </div>

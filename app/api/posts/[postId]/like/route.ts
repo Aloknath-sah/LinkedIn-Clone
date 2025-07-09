@@ -17,7 +17,7 @@ export const GET = async (req: NextRequest) => {
     }
 
     const post = await Post.findById(postId);
-    if (!post) return NextRequest.json({ error: "Post not found" });
+    if (!post) return NextResponse.json({ error: "Post not found" });
     return NextResponse.json(post.likes);
   } catch {
     return NextResponse.json({ error: "An error occured" });

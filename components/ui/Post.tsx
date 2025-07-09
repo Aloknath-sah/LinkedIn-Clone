@@ -5,13 +5,13 @@ import { useUser } from "@clerk/nextjs";
 import { Button } from "./button";
 import { Trash2 } from "lucide-react";
 import { Badge } from "./badge";
-import { IPost } from "@/models/post.model";
+import { IPostDocument } from "@/models/post.model";
 import { PostContent } from "./PostContent";
 import { SocialOptions } from "./SocialOptions";
 import TimeAgoComponent from "./TimeAgo";
 import { deletePostAction } from "@/lib/serveractions";
 
-export const Post = ({ post }: { post: IPost }) => {
+export const Post = ({ post }: { post: IPostDocument }) => {
   const { user } = useUser();
   const fullName = post?.user.firstName + " " + post?.user.lastName;
   const loggedInUser = user?.id === post?.user?.userId;
