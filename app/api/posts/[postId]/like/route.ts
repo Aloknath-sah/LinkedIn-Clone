@@ -11,7 +11,7 @@ export const GET = async (
     const post = await Post.findById({ _id: params.postId });
     if (!post) return NextRequest.json({ error: "Post not found" });
     return NextResponse.json(post.likes);
-  } catch (error: any) {
+  } catch {
     return NextResponse.json({ error: "An error occured" });
   }
 };
@@ -31,7 +31,7 @@ export const POST = async (
     if (!post) return NextResponse.json({ error: "Post not found" });
     await post.updateOne({ $addToSet: { likes: userId } });
     return NextResponse.json({ message: "Post liked successfully" });
-  } catch (error: any) {
+  } catch {
     return NextResponse.json({ error: "An error occured" });
   }
 };

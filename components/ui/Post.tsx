@@ -40,7 +40,7 @@ export const Post = ({ post }: { post: IPost }) => {
           {loggedInUser && (
             <Button
               onClick={() => {
-                const res = deletePostAction(post._id);
+                deletePostAction(post._id);
               }}
               size={"icon"}
               className="rounded-full cursor-pointer"

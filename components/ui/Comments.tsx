@@ -7,7 +7,7 @@ export const Comments = ({post}: {post: IPostDocument}) => {
   return (
     <div>
         {
-            post?.comments?.map((comment: any) => {
+            post?.comments?.map((comment: ICommentDocument) => {
                 return (<Comment key={comment._id} comment={comment} />)
             })
         }

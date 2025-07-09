@@ -4,10 +4,8 @@ import {
   DialogContent,
   DialogFooter,
   DialogHeader,
-  DialogTitle,
-  DialogClose,
+  DialogTitle
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
 import { ProfilePhoto } from "../shared/ProfilePhoto";
 import { Textarea } from "@/components/ui/textarea";
 import { Images } from "lucide-react";
@@ -22,7 +20,7 @@ export function PostDialog({
   open,
   src,
 }: {
-  setOpen: any;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   open: boolean;
   src: string;
 }) {
@@ -41,7 +39,7 @@ export function PostDialog({
     }
   }, [open]);
 
-  const changeHandler = (e: any) => {
+  const changeHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInputText(e.target.value);
   };
 

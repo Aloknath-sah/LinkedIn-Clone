@@ -14,7 +14,7 @@ export const CommentInput = ({postId}: {postId: string}) => {
             if(!user) throw new Error("User not authenticated")
             await createCommentAction(postId, formData)
         }
-        catch(error) {
+        catch {
             throw new Error("An error occured")
         }
     }

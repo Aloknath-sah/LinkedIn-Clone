@@ -3,8 +3,9 @@ import React, { useState } from 'react'
 import { Input } from "./input";
 import { ProfilePhoto } from '../shared/ProfilePhoto';
 import { PostDialog } from './PostDialog';
+import type { User } from "@clerk/nextjs/server";
 
-export const FeedInput = ({ user }: { user: any }) => {
+export const FeedInput = ({ user }: { user: User | null }) => {
   const [open, setOpen] = useState<boolean>(false)
   const inputHandler = () => {
     setOpen(true)

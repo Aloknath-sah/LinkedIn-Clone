@@ -8,6 +8,7 @@ export interface IComment {
 }
 
 export interface ICommentDocument extends IComment, Document {
+  _id: string;
   createdAt: Date;
   updatedAt: Date;
 }

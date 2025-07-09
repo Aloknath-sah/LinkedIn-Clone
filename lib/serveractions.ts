@@ -53,8 +53,8 @@ export const createPostAction = async (
       });
     }
     revalidatePath("/");
-  } catch (err: any) {
-    throw new Error(err);
+  } catch {
+    throw new Error("An error occured");
   }
 };
 
@@ -87,8 +87,8 @@ export const deletePostAction = async (postId: string) => {
   try {
     await Post.deleteOne({ _id: postId });
     revalidatePath("/");
-  } catch (err: any) {
-    throw new Error("An error occured", err);
+  } catch {
+    throw new Error("An error occured");
   }
 };
 
@@ -122,7 +122,7 @@ export const createCommentAction = async (
     await post.save();
     revalidatePath("/");
 
-  } catch (error) {
+  } catch {
     throw new Error("error occured");
   }
 };
