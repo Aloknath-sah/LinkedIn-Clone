@@ -2,13 +2,21 @@ import connectDB from "@/lib/db";
 import { Post } from "@/models/post.model";
 import { NextRequest, NextResponse } from "next/server";
 
-export const GET = async (
-  req: NextRequest,
-  { params }: { params: { postId: string } }
-) => {
+export const GET = async (req: NextRequest) => {
   try {
     await connectDB();
-    const post = await Post.findById({ _id: params.postId });
+
+    const url = new URL(req.url);
+    const postId = url.pathname.split("/").pop();
+
+    if (!postId) {
+      return NextResponse.json(
+        { error: "No post ID provided" },
+        { status: 400 }
+      );
+    }
+
+    const post = await Post.findById(postId);
     if (!post) return NextRequest.json({ error: "Post not found" });
     return NextResponse.json(post.likes);
   } catch {
@@ -21,9 +29,9 @@ export const POST = async (
   req: NextRequest,
   context: { params: { postId: string } }
 ) => {
-  console.log(context.params)
+  console.log(context.params);
 
-  const postId  = context.params.postId;
+  const postId = context.params.postId;
   try {
     await connectDB();
     const userId = await req.json();
